@@ -1,8 +1,7 @@
 package com.etnetera.hr.repository;
 
+import com.etnetera.hr.data.Version;
 import org.springframework.data.repository.CrudRepository;
-
-import com.etnetera.hr.data.JavaScriptFramework;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,6 +11,6 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface JavaScriptFrameworkRepository extends CrudRepository<JavaScriptFramework, Long> {
+public interface VersionRepository extends CrudRepository<Version, Long> {
 
 }

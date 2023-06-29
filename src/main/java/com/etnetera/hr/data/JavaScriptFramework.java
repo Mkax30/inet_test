@@ -1,53 +1,79 @@
 package com.etnetera.hr.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
+@Data
+@NoArgsConstructor
 @Entity
 public class JavaScriptFramework {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@Column(nullable = false, length = 30)
-	private String name;
+    @Column(nullable = false, length = 30)
+    private String name;
 
-	public JavaScriptFramework() {
-	}
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Version> versions;
 
-	public JavaScriptFramework(String name) {
-		this.name = name;
-	}
+    @Column
+    private int hypeLevel;
 
-	public Long getId() {
-		return id;
-	}
+    public JavaScriptFramework(String name) {
+        this.name = name;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return "JavaScriptFramework [id=" + id + ", name=" + name + "]";
-	}
+    public JavaScriptFramework setName(String name) {
+        this.name = name;
+        return this;
+    }
 
+    public Set<Version> getVersions() {
+        return versions;
+    }
+
+    public JavaScriptFramework setVersions(Set<Version> versions) {
+        this.versions = versions;
+        return this;
+    }
+
+    public JavaScriptFramework addVersion(Version version) {
+        if (versions == null) {
+            versions = new HashSet<>();
+        }
+        this.versions.add(version);
+        return this;
+    }
+
+    public int getHypeLevel() {
+        return hypeLevel;
+    }
+
+    public JavaScriptFramework setHypeLevel(int hypeLevel) {
+        this.hypeLevel = hypeLevel;
+        return this;
+    }
 }
