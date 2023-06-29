@@ -63,7 +63,6 @@ public class JavaScriptFrameworkTests {
 
     @Test
     public void createOperationTest() throws Exception {
-        System.out.println(">>>>>>>>>>>>>>> " + asJsonString(framework));
         mockMvc.perform(post("/api/v1/frameworks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(framework)))
@@ -79,6 +78,12 @@ public class JavaScriptFrameworkTests {
     }
 
     @Test
+    public void readOperationTest_not_found() throws Exception {
+        mockMvc.perform(get("/api/v1/frameworks/{id}", 100))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void updateOperationTest() throws Exception {
         JavaScriptFramework updatedFramework = framework;
         updatedFramework.setName("Updated");
@@ -89,8 +94,6 @@ public class JavaScriptFrameworkTests {
         version.setDeprecationDate(LocalDate.now().plusDays(1));
 
         updatedFramework.getVersions().add(version);
-
-        System.out.println(">>>>>>>>>>>>>>> " + asJsonString(framework));
 
         mockMvc.perform(put("/api/v1/frameworks/{id}", savedFramework.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,9 +106,23 @@ public class JavaScriptFrameworkTests {
     }
 
     @Test
+    public void updateOperationTest_not_found() throws Exception {
+        mockMvc.perform(put("/api/v1/frameworks/{id}", -1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(framework)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void deleteOperationTest() throws Exception {
         mockMvc.perform(delete("/api/v1/frameworks/{id}", savedFramework.getId()))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deleteOperationTest_not_found() throws Exception {
+        mockMvc.perform(delete("/api/v1/frameworks/{id}", 100))
+                .andExpect(status().isNotFound());
     }
 
     private static String asJsonString(Object obj) throws Exception {
