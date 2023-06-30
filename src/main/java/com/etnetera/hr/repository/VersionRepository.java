@@ -6,9 +6,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Spring data repository interface used for accessing the data in database.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
 @Repository
 public interface VersionRepository extends CrudRepository<Version, Long> {

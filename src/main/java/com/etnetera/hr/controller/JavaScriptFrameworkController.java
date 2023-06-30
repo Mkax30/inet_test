@@ -1,8 +1,10 @@
 package com.etnetera.hr.controller;
 
 import com.etnetera.hr.data.JavaScriptFramework;
+import com.etnetera.hr.data.Version;
 import com.etnetera.hr.mapper.FrameworkMapper;
 import com.etnetera.hr.model.JavaScriptFrameworkDto;
+import com.etnetera.hr.model.VersionDto;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,8 +55,15 @@ public class JavaScriptFrameworkController {
             JavaScriptFramework framework = frameworkOptional.get();
             framework.setName(frameworkDto.getName());
             framework.setHypeLevel(frameworkDto.getHypeLevel());
+
             if (frameworkDto.getVersions() != null) {
-                framework.getVersions().addAll(frameworkDto.getVersions());
+                framework.getVersions().clear(); // Clear existing versions before adding new ones
+                for (VersionDto versionDto : frameworkDto.getVersions()) {
+                    Version version = new Version();
+                    version.setVersionNumber(versionDto.getVersionNumber());
+                    version.setDeprecationDate(versionDto.getDeprecationDate());
+                    framework.getVersions().add(version);
+                }
             }
             JavaScriptFrameworkDto updatedFramework = FrameworkMapper.INSTANCE.frameworkToFrameworkDto(repository.save(framework));
             return ResponseEntity.status(HttpStatus.OK).body(updatedFramework);

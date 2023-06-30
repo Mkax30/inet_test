@@ -1,8 +1,5 @@
 package com.etnetera.hr.data;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +9,6 @@ import java.util.Set;
  *
  * @author Etnetera
  */
-@Data
-@NoArgsConstructor
 @Entity
 public class JavaScriptFramework {
 
@@ -29,6 +24,9 @@ public class JavaScriptFramework {
 
     @Column
     private int hypeLevel;
+
+    public JavaScriptFramework() {
+    }
 
     public JavaScriptFramework(String name) {
         this.name = name;

@@ -41,6 +41,12 @@ public class JavaScriptFrameworkTests {
 
     private JavaScriptFramework savedFramework;
 
+    private static String asJsonString(Object obj) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.writeValueAsString(obj);
+    }
+
     @Before
     public void setup() {
         JavaScriptFrameworkController javaScriptFrameworkController = new JavaScriptFrameworkController(repository);
@@ -79,7 +85,7 @@ public class JavaScriptFrameworkTests {
 
     @Test
     public void readOperationTest_not_found() throws Exception {
-        mockMvc.perform(get("/api/v1/frameworks/{id}", 100))
+        mockMvc.perform(get("/api/v1/frameworks/{id}", -1))
                 .andExpect(status().isNotFound());
     }
 
@@ -121,13 +127,7 @@ public class JavaScriptFrameworkTests {
 
     @Test
     public void deleteOperationTest_not_found() throws Exception {
-        mockMvc.perform(delete("/api/v1/frameworks/{id}", 100))
+        mockMvc.perform(delete("/api/v1/frameworks/{id}", -1))
                 .andExpect(status().isNotFound());
-    }
-
-    private static String asJsonString(Object obj) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper.writeValueAsString(obj);
     }
 }
